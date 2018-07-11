@@ -4,24 +4,26 @@ ref=imadjust(Image_ref,stretchlim(Image_ref,0),[0,1],1);
 [a,b]=size(ref);
 ssq=round((a+b)/300)^2;
 if a+b<1000
-    bw_size=15;
+    bw_size=11;
     dm=12;
+    dm_open=1;
 else
     bw_size=21;
     dm=27;
+    dm_open=3;
 end
 se_dm=strel('disk',dm);
 xbdingmao=imsubtract(imadd(ref,imtophat(ref,se_dm)),imbothat(ref,se_dm));
-xbdingmao=imopen(xbdingmao,strel('disk',3));
-C=0.10;
+% xbdingmao=imopen(xbdingmao,strel('disk',dm_open));
+C=0.12;
 IM=xbdingmao;
 mIM=imfilter(IM,fspecial('average',bw_size),'replicate');
 sIM=IM-mIM-C;
-sIM=imopen(sIM,strel('disk',2));
+sIM=imopen(sIM,strel('disk',dm_open));
 sIM=imfilter(sIM,fspecial('average',2),'replicate');
 bw=double(imbinarize(sIM,0));
 % imshow(sIM,[])
-bw=imopen(bw,strel('square',2));
+bw=imopen(bw,strel('square',dm_open));
 fill=imfill(double(bw));
 xbbwareaopen = bwareaopen(fill,ssq);
 BS=strel('square',1);
@@ -31,10 +33,17 @@ mask = imextendedmin(D,0.8);
 D2 = imimposemin(D,mask);
 Ld2 = watershed(D2,8);
 bw(Ld2==0)=0;
-bw=imopen(bw,strel('disk',2));
-bw=imopen(bw,strel('disk',2));
-bw=imerode(bw,strel('square',1));
-bw = bwareaopen(bw,round(ssq/0.40));
+if a+b > 1000
+    bw=imopen(bw,strel('disk',2));
+    bw=imopen(bw,strel('disk',2));
+    bw=imerode(bw,strel('square',1));
+    bw = bwareaopen(bw,round(ssq/0.40));
+else
+%     bw=imopen(bw,strel('disk',1));
+    bw=imopen(bw,strel('disk',1));
+    bw=imerode(bw,strel('square',1));
+    bw = bwareaopen(bw,round(ssq/0.40));
+end
 bw=imclearborder(bw,8);
 [~,L]= bwboundaries(bw);
 regionprop1=regionprops(imerode(L,strel('disk',2)),Image_average,'MeanIntensity');
@@ -55,7 +64,9 @@ outline_temp=L*0;
 %     end
 % end
 % imov=imoverlay(Image_ref,outline_temp,'cyan');
+% imshow(imov)
 % imov=imoverlay(Image_average,outline_temp,'cyan');
+% figure
 % imshow(imov)
 %%
 [B,L]= bwboundaries(L);

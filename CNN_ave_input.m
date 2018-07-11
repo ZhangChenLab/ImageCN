@@ -4,7 +4,7 @@ ref = imadjust(ref,stretchlim(ref,0),[0,1],1);
 [a,b] = size(ref);
 ssq = round((a+b)/350)^2;
 if a+b<1000
-    bw_size = 15;
+    bw_size = 11;
     dm = 12;
 else
     bw_size = 21;
@@ -21,7 +21,7 @@ mIM = imfilter(IM,fspecial('average',bw_size),'replicate');
 sIM = IM-mIM-C;
 sIM = imfilter(sIM,fspecial('average',3),'replicate');
 bw = double(imbinarize(sIM,0));
-% imshow(bw)
+imshow(bw)
 bw = imopen(bw,strel('square',1));
 bw = imerode(bw,strel('square',1));
 fill = imfill(bw);
@@ -33,11 +33,19 @@ mask  =  imextendedmin(D,0.4);
 D2  =  imimposemin(D,mask);
 Ld2  =  watershed(D2,8);
 bw(Ld2 == 0) = 0;
-bw = imopen(bw,strel('disk',1));
-bw = imopen(bw,strel('disk',2));
-bw = imerode(bw,strel('square',1));
-bw = imopen(bw,strel('square',3));
-bw  =  bwareaopen(bw,round(ssq/0.4),4);
+if a+b > 1000
+    bw = imopen(bw,strel('disk',1));
+    bw = imopen(bw,strel('disk',2));
+    bw = imerode(bw,strel('square',1));
+    bw = imopen(bw,strel('square',3));
+    bw  =  bwareaopen(bw,round(ssq/0.4),4);
+else
+     bw = imerode(bw,strel('square',1));
+%      bw = imopen(bw,strel('square',2));
+     bw = imopen(bw,strel('square',1));
+     bw = imopen(bw,strel('square',2));
+     bw  =  bwareaopen(bw,round(ssq/0.2),4);
+end
 [B,L] =  bwboundaries(bw);
 outline_ave = L*0;
 % for i = 1:length(B)
