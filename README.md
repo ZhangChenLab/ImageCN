@@ -7,3 +7,7 @@ You will see outcome like this:
 <img src="media/ROI.png" height="200px" width="auto"/> 
 <img src="media/spikes.png" height="200px" width="auto"/>
 
+Required toolbox:
+Neural Network Toolbox (for Deep Learning)
+Image Processing Toolbox
+Signal Processing Toolbox
