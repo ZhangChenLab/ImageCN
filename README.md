@@ -5,5 +5,5 @@ Convolutional neural networks (CNNs) and fluctuation method–based toolbox (Ima
 run 'Run_example.m' to process 'demo_movie.tif' that in 'example' folder
 You will see outcome like this:
 | <img src="media/ROI.png" height="140px" width="auto"/> | 
-| <img src="master/media/spikes.png" height="140px" width="auto"/> | 
+| <img src="media/spikes.png" height="140px" width="auto"/> | 
 
