@@ -55,7 +55,7 @@ for  bb = 1:length(regionprop1)
     Out_combine1 = regionprop1(bb).MeanIntensity;
     Out_combine2 = regionprop2(bb).MeanIntensity;
     if Out_combine1>0.50 || Out_combine2<0.10
-        L(L == bb) = 0;
+%         L(L == bb) = 0;
     end
 end
 [B,L] =  bwboundaries(L);

@@ -37,6 +37,44 @@ for ci=1:length(wrong_num)
 end
 [~,raw_L_ave]= bwboundaries(L_ave);
 %%
+L_ave=raw_L_ave;
+L_ref=raw_L_ref;
+[B_ave,L_ave]= bwboundaries(L_ave);
+[B_ref,L_ref]= bwboundaries(L_ref);
+outline_ave=L_ave*0;
+outline_ref=L_ave*0;
+outline_merge=L_ave*0;
+for i=1:length(B_ave)
+    outline=B_ave{i};
+    for j=1:length(outline)
+        outline_ave(outline(j,1),outline(j,2))=1;
+    end
+end
+imov_ave=imoverlay(Image_average,outline_ave,'y');
+% imov_ref=imoverlay(Image_ref,outline_ave,'y');
+for i=1:length(B_ref)
+    outline=B_ref{i};
+    for j=1:length(outline)
+        outline_ref(outline(j,1),outline(j,2))=1;
+    end
+end
+% imov_ave=imoverlay(imov_ave,outline_ref,'r');
+imov_ref=imoverlay(Image_ref,outline_ref,'c');
+% imov_ave=imoverlay(imov_ave,outline_merge,'y');
+% imov_ref=imoverlay(imov_ref,outline_merge,'y');
+figure
+subplot(1,2,1)
+imshow(Image_average)
+subplot(1,2,2)
+imshow(imov_ave)
+figure
+subplot(1,2,1)
+imshow(Image_ref)
+subplot(1,2,2)
+imshow(imov_ref)
+imwrite(imov_ave,File_ave_imov);
+imwrite(imov_ref,File_ref_imov);
+%%
 L_merge=raw_L_ref*0;
 L_ave=raw_L_ave;
 L_ref=raw_L_ref;
@@ -57,40 +95,5 @@ L_ave(L_ave==0.5)=0;
 [B_ave,L_ave]= bwboundaries(L_ave);
 [B_ref,L_ref]= bwboundaries(L_ref);
 [B_merge,L_merge]= bwboundaries(L_merge);
-outline_ave=L_ave*0;
-outline_ref=L_ave*0;
-outline_merge=L_ave*0;
-for i=1:length(B_ave)
-    outline=B_ave{i};
-    for j=1:length(outline)
-        outline_ave(outline(j,1),outline(j,2))=1;
-    end
-end
-imov_ave=imoverlay(Image_average,outline_ave,'y');
-imov_ref=imoverlay(Image_ref,outline_ave,'y');
-for i=1:length(B_ref)
-    outline=B_ref{i};
-    for j=1:length(outline)
-        outline_ref(outline(j,1),outline(j,2))=1;
-    end
-end
-imov_ave=imoverlay(imov_ave,outline_ref,'r');
-imov_ref=imoverlay(imov_ref,outline_ref,'r');
-for i=1:length(B_merge)
-    outline=B_merge{i};
-    for j=1:length(outline)
-        outline_merge(outline(j,1),outline(j,2))=1;
-    end
-end
-mapp=[length(B_ave),length(B_ref),length(B_merge)];
-imov_ave=imoverlay(imov_ave,outline_merge,'c');
-imov_ref=imoverlay(imov_ref,outline_merge,'c');
-figure
-subplot(1,2,1)
-imshow(imov_ave)
-subplot(1,2,2)
-imshow(imov_ref)
-imwrite(imov_ave,File_ave_imov);
-imwrite(imov_ref,File_ref_imov);
 save([Pathnew,'\TempData.mat'],'th_ref','th_ave','imov_ave','imov_ref','L_ave','L_ref','L_merge','diameter','-append');
 fprintf('Done\n')

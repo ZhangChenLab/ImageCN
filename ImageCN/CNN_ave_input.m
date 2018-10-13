@@ -3,7 +3,7 @@ ref = Image_average;
 ref = imadjust(ref,stretchlim(ref,0),[0,1],1);
 [a,b] = size(ref);
 % ssq = round((a+b)/400)^2
-ssq = round(diameter*1.5/2);
+ssq = round(diameter*2.0/2);
 if a+b<1000
     bw_size = 11;
     dm = 8;
@@ -38,7 +38,7 @@ xbbwareaopen  =  bwareaopen(fill,ssq);
 BS = strel('square',1);
 bw = imdilate(xbbwareaopen,BS);
 D  =  -bwdist(~bw);
-mask  =  imextendedmin(D,0.4);
+mask  =  imextendedmin(D,0.2);
 D2  =  imimposemin(D,mask);
 Ld2  =  watershed(D2,8);
 bw(Ld2 == 0) = 0;
