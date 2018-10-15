@@ -18,6 +18,9 @@ R_ave(imdilate(merge_region,se2)>1) = 0;
 Centroid_merge = regionprops(L_merge,'Centroid');
 Centroid_ref = regionprops(L_ref,'Centroid');
 Centroid_ave = regionprops(L_ave,'Centroid');
+int1=[];
+int2=[];
+int3=[];
 %% 'L_ave','L_ref','L_merge'
 for u  =  1:t(1,1)
     picture  =  im2double(imread(File,u));
@@ -28,13 +31,25 @@ for u  =  1:t(1,1)
     intensity_L3 = regionprops(L_ave,picture,'meanintensity');
     intensity_R3 = regionprops(R_ave,picture,'meanintensity');
     for i = 1:length(intensity_L1)
-         int1(u,i) = 2*intensity_L1(i).MeanIntensity-intensity_R1(i).MeanIntensity;
+        if ~isnan(intensity_R1(i).MeanIntensity)
+            int1(u,i) = 2*intensity_L1(i).MeanIntensity-intensity_R1(i).MeanIntensity;
+        else
+            int1(u,i) = 2*intensity_L1(i).MeanIntensity;
+        end
     end
     for i = 1:length(intensity_L2)
-         int2(u,i) = 2*intensity_L2(i).MeanIntensity-intensity_R2(i).MeanIntensity;
+        if ~isnan(intensity_R2(i).MeanIntensity)
+            int2(u,i) = 2*intensity_L2(i).MeanIntensity-intensity_R2(i).MeanIntensity;
+        else
+            int2(u,i) = 2*intensity_L2(i).MeanIntensity;
+        end
     end
     for i = 1:length(intensity_L3)
-         int3(u,i) = 2*intensity_L3(i).MeanIntensity-intensity_R3(i).MeanIntensity;
+        if ~isnan(intensity_R3(i).MeanIntensity)
+            int3(u,i) = 2*intensity_L3(i).MeanIntensity-intensity_R3(i).MeanIntensity;
+        else
+            int3(u,i) = 2*intensity_L3(i).MeanIntensity;
+        end
     end
 end
 raw_intensity = [int1,int2,int3];

@@ -5,6 +5,7 @@ th2 = th_ave;
 d = diameter;
 load([Path,'\process\TempData.mat']);
 clear imov L_ave L_ref L_merge th_ref th_ave diameter
+[a,b]=size(Image_average);
 th_ref = th1;
 th_ave = th2;
 diameter = d;
@@ -95,5 +96,63 @@ L_ave(L_ave==0.5)=0;
 [B_ave,L_ave]= bwboundaries(L_ave);
 [B_ref,L_ref]= bwboundaries(L_ref);
 [B_merge,L_merge]= bwboundaries(L_merge);
+for i=1:length(B_ave)
+    outline=B_ave{i};
+    for j=1:length(outline)
+        outline_ave(outline(j,1),outline(j,2))=1;
+    end
+end
+for i=1:length(B_ref)
+    outline=B_ref{i};
+    for j=1:length(outline)
+        outline_ref(outline(j,1),outline(j,2))=1;
+    end
+end
+for i=1:length(B_merge)
+    outline=B_merge{i};
+    for j=1:length(outline)
+        outline_merge(outline(j,1),outline(j,2))=1;
+    end
+end
+outline_index=outline_merge+outline_ref+outline_ave;
+neuron_index_ref=imoverlay(Image_ref,outline_index,[1,0.5,0]);
+f_size=ceil(a+b)/150;
+figure
+imshow(neuron_index_ref,'border','tight');
+hold on
+for i=1:max(max(L_merge))
+    loc=mean(B_merge{i});
+    text(loc(2)-2,loc(1),num2str(i),'color','c','FontSize',f_size)
+end
+for i=1:max(max(L_ref))
+    loc=mean(B_ref{i});
+    text(loc(2)-2,loc(1),num2str(i+max(max(L_merge))),'color','c','FontSize',f_size)
+end
+for i=1:max(max(L_ave))
+    loc=mean(B_ave{i});
+    text(loc(2)-2,loc(1),num2str(i+max(max(L_merge))+max(max(L_ref))),'color','c','FontSize',f_size)
+end
+hold off
+print(gcf,[Pathnew,'Neuron_index_ref'],'-dtiff','-r600')
+close
+neuron_index_ave=imoverlay(Image_average,outline_index,[1,0.5,0]);
+figure
+imshow(neuron_index_ave,'border','tight');
+hold on
+for i=1:max(max(L_merge))
+    loc=mean(B_merge{i});
+    text(loc(2)-2,loc(1),num2str(i),'color','c','FontSize',f_size)
+end
+for i=1:max(max(L_ref))
+    loc=mean(B_ref{i});
+    text(loc(2)-2,loc(1),num2str(i+max(max(L_merge))),'color','c','FontSize',f_size)
+end
+for i=1:max(max(L_ave))
+    loc=mean(B_ave{i});
+    text(loc(2)-2,loc(1),num2str(i+max(max(L_merge))+max(max(L_ref))),'color','c','FontSize',f_size)
+end
+hold off
+print(gcf,[Pathnew,'Neuron_index_ave'],'-dtiff','-r600')
+close
 save([Pathnew,'\TempData.mat'],'th_ref','th_ave','imov_ave','imov_ref','L_ave','L_ref','L_merge','diameter','-append');
 fprintf('Done\n')
