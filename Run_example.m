@@ -8,7 +8,6 @@ FileGeneration(Folder_name,Filemane,frame_rate);
 %% STEP 2 Reference image generation
 RefGeneration(Folder_name)
 %% STEP 3 ROI detection
-clc
 Ref_th = 0.0; % threshold  of acitcity feature
 Ave_th = -0.4; % threshold  of morphological structure
 D = 6;         % diameter of neuron
@@ -20,8 +19,10 @@ PeakThreshold = 0.05; % threshold of delta_F/F
 PeakDetection(Folder_name,PeakThreshold)
 Peak3D(Folder_name)
 %% STEP 6 Manual selection of signals 
+% This step uses crosshairs to delete or add peak points in calcium traces
 % Click the left mouse button to delete a point
 % Click the right mouse button add a point
-% Press 'Enter' to go next
-% Click the middle mouse button to go back
+% Press 'Enter' to see the results in lower subplot, and stop using the crosshairs
+% Press 'Enter' again to go next
+% Click the middle mouse button to go back to the previous trace
 PeakManualSelection(Folder_name)
