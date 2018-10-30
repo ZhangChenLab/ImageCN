@@ -20,7 +20,7 @@ PeakThreshold = 0.05; % threshold of delta_F/F
 PeakDetection(Folder_name,PeakThreshold)
 Peak3D(Folder_name)
 %% STEP 6 Manual selection of signals
-% This step uses crosshairs to delete or add peak points in calcium traces
+% This step uses crosshairs to delete or add peak points
 % Click the left mouse button to delete a point
 % Click the right mouse button add a point
 % Press 'Enter' to see the results in lower subplot, and stop using the crosshairs
