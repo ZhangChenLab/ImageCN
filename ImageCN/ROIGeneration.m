@@ -64,15 +64,19 @@ imov_ref=imoverlay(Image_ref,outline_ref,'c');
 % imov_ave=imoverlay(imov_ave,outline_merge,'y');
 % imov_ref=imoverlay(imov_ref,outline_merge,'y');
 figure
-subplot(1,2,1)
+subplot(2,2,1)
 imshow(Image_average)
-subplot(1,2,2)
+title('average projection image')
+subplot(2,2,2)
 imshow(imov_ave)
-figure
-subplot(1,2,1)
+title('detection results')
+% figure
+subplot(2,2,3)
 imshow(Image_ref)
-subplot(1,2,2)
+title('reference image')
+subplot(2,2,4)
 imshow(imov_ref)
+title('detection results')
 imwrite(imov_ave,File_ave_imov);
 imwrite(imov_ref,File_ref_imov);
 %%
@@ -120,6 +124,7 @@ f_size=ceil(a+b)/150;
 figure
 imshow(neuron_index_ref,'border','tight');
 hold on
+ROIs={};
 for i=1:max(max(L_merge))
     loc=mean(B_merge{i});
     text(loc(2)-2,loc(1),num2str(i),'color','c','FontSize',f_size)
@@ -151,8 +156,9 @@ for i=1:max(max(L_ave))
     loc=mean(B_ave{i});
     text(loc(2)-2,loc(1),num2str(i+max(max(L_merge))+max(max(L_ref))),'color','c','FontSize',f_size)
 end
+ROIs=[B_merge;B_ref;B_ave];
 hold off
 print(gcf,[Pathnew,'Neuron_index_ave'],'-dtiff','-r600')
 close
-save([Pathnew,'\TempData.mat'],'th_ref','th_ave','imov_ave','imov_ref','L_ave','L_ref','L_merge','diameter','-append');
+save([Pathnew,'\TempData.mat'],'th_ref','th_ave','imov_ave','imov_ref','L_ave','L_ref','L_merge','diameter','ROIs','-append');
 fprintf('Done\n')
