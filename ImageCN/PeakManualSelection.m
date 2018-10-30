@@ -1,6 +1,6 @@
 function PeakManualSelection(Path)
 %%
-% load([Path,'\process\TempData.mat']);
+load([Path,'\process\TempData.mat']);
 [a,b]=size(sig);
 manual_loc=zeros(a,b);
 screen=get(0,'ScreenSize');
