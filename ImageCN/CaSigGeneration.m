@@ -54,9 +54,19 @@ for u  =  1:t(1,1)
 end
 raw_intensity = [int1,int2,int3];
 %%
-for i = 1:size(raw_intensity,2)
-    filtered_intensity(:,i) = smooth(raw_intensity(:,i),delta*FilterThreshold);
+[a,b]=size(raw_intensity);
+for i = 1:b
+    y=raw_intensity(:,i);
+    f_y=fft(y);
+    f_shift=(fftshift(f_y));
+    power_low = 1-gaussmf(1:a,[6 round(a/2)]);
+    power_high = gaussmf(1:a,[a/2 round(a)/2]);
+%     power_high=1;
+    f_shift_filter =f_shift.*power_low'.*power_high';
+    y_fft=real(ifft(ifftshift(f_shift_filter)));
+    filtered_intensity(:,i) = smooth(y_fft,delta*FilterThreshold)+mean(y);
 end
 sig = (filtered_intensity-mean(filtered_intensity))./mean(filtered_intensity);
+sig(sig<-0.3)=0;
 save([Path,'\process\TempData.mat'],'raw_intensity','filtered_intensity','sig','-append');
 disp('Done')

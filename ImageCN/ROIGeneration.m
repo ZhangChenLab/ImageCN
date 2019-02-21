@@ -120,45 +120,48 @@ for i=1:length(B_merge)
 end
 outline_index=outline_merge+outline_ref+outline_ave;
 neuron_index_ref=imoverlay(Image_ref,outline_index,[1,0.5,0]);
-f_size=ceil(a+b)/150;
-figure
-imshow(neuron_index_ref,'border','tight');
-hold on
-ROIs={};
-for i=1:max(max(L_merge))
-    loc=mean(B_merge{i});
-    text(loc(2)-2,loc(1),num2str(i),'color','c','FontSize',f_size)
-end
-for i=1:max(max(L_ref))
-    loc=mean(B_ref{i});
-    text(loc(2)-2,loc(1),num2str(i+max(max(L_merge))),'color','c','FontSize',f_size)
-end
-for i=1:max(max(L_ave))
-    loc=mean(B_ave{i});
-    text(loc(2)-2,loc(1),num2str(i+max(max(L_merge))+max(max(L_ref))),'color','c','FontSize',f_size)
-end
-hold off
-print(gcf,[Pathnew,'Neuron_index_ref'],'-dtiff','-r600')
-close
 neuron_index_ave=imoverlay(Image_average,outline_index,[1,0.5,0]);
-figure
-imshow(neuron_index_ave,'border','tight');
-hold on
-for i=1:max(max(L_merge))
-    loc=mean(B_merge{i});
-    text(loc(2)-2,loc(1),num2str(i),'color','c','FontSize',f_size)
-end
-for i=1:max(max(L_ref))
-    loc=mean(B_ref{i});
-    text(loc(2)-2,loc(1),num2str(i+max(max(L_merge))),'color','c','FontSize',f_size)
-end
-for i=1:max(max(L_ave))
-    loc=mean(B_ave{i});
-    text(loc(2)-2,loc(1),num2str(i+max(max(L_merge))+max(max(L_ref))),'color','c','FontSize',f_size)
-end
-ROIs=[B_merge;B_ref;B_ave];
-hold off
-print(gcf,[Pathnew,'Neuron_index_ave'],'-dtiff','-r600')
-close
+imwrite(neuron_index_ref,[Pathnew,'Neuron_index_ref.tif']);
+imwrite(neuron_index_ave,[Pathnew,'Neuron_index_ref.tif']);
+% f_size=ceil(a+b)/150;
+% figure
+% imshow(neuron_index_ref,'border','tight');
+% hold on
+% ROIs={};
+% for i=1:max(max(L_merge))
+%     loc=mean(B_merge{i});
+%     text(loc(2)-2,loc(1),num2str(i),'color','c','FontSize',f_size)
+% end
+% for i=1:max(max(L_ref))
+%     loc=mean(B_ref{i});
+%     text(loc(2)-2,loc(1),num2str(i+max(max(L_merge))),'color','c','FontSize',f_size)
+% end
+% for i=1:max(max(L_ave))
+%     loc=mean(B_ave{i});
+%     text(loc(2)-2,loc(1),num2str(i+max(max(L_merge))+max(max(L_ref))),'color','c','FontSize',f_size)
+% end
+% hold off
+% print(gcf,[Pathnew,'Neuron_index_ref'],'-dtiff','-r600')
+% close
+
+% figure
+% imshow(neuron_index_ave,'border','tight');
+% hold on
+% for i=1:max(max(L_merge))
+%     loc=mean(B_merge{i});
+%     text(loc(2)-2,loc(1),num2str(i),'color','c','FontSize',f_size)
+% end
+% for i=1:max(max(L_ref))
+%     loc=mean(B_ref{i});
+%     text(loc(2)-2,loc(1),num2str(i+max(max(L_merge))),'color','c','FontSize',f_size)
+% end
+% for i=1:max(max(L_ave))
+%     loc=mean(B_ave{i});
+%     text(loc(2)-2,loc(1),num2str(i+max(max(L_merge))+max(max(L_ref))),'color','c','FontSize',f_size)
+% end
+% ROIs=[B_merge;B_ref;B_ave];
+% hold off
+% print(gcf,[Pathnew,'Neuron_index_ave'],'-dtiff','-r600')
+% close
 save([Pathnew,'\TempData.mat'],'th_ref','th_ave','imov_ave','imov_ref','L_ave','L_ref','L_merge','diameter','ROIs','-append');
 fprintf('Done\n')

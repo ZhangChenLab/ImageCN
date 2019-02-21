@@ -22,7 +22,7 @@ xbdingmao = imsubtract(imadd(ref,imtophat(ref,se_dm)),imbothat(ref,se_dm));
 % xbdingmao = imgaussfilt(xbdingmao,1);
 xbdingmao = imdilate(xbdingmao,strel('square',bw_dia));
 xbdingmao = imopen(xbdingmao,strel('disk',dm_open));
-C = 0.018;
+C = 0.016;
 IM = xbdingmao;
 mIM = imfilter(IM,fspecial('average',bw_size),'replicate');
 sIM = IM-mIM-C;
@@ -57,6 +57,17 @@ else
      bw = bwareaopen(bw,round(ssq/0.4),4);
 end
 [B,L] =  bwboundaries(bw);
+stats = regionprops(L,'MajorAxisLength','MinorAxisLength');
+for i=1:length(stats)
+    axis_ratio=stats(i).MinorAxisLength/stats(i).MajorAxisLength;
+    plain=mode(B{i},'all');
+    if axis_ratio<0.35
+        L(L==i)=0;
+    end
+end
+im_border=-(imclearborder(imdilate(L,strel('disk',2)))-imdilate(L,strel('disk',2)));
+L(im_border>0)=0;
+[B,L] =  bwboundaries(L);
 % outline_temp = L*0;
 % for i = 1:length(B)
 %     outline = B{i};

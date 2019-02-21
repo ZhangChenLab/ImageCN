@@ -83,6 +83,6 @@ end
 fprintf('\n')
 %%
 Image_open = imopen(Image_filter_max,se2);
-Image_ref = imadjust(Image_open,stretchlim(Image_open));
+Image_ref = imadjust(Image_open,stretchlim(Image_open,0));
 % imshow(Image_ref)
 % imwrite(Image_ref,File_Reference_Image);
