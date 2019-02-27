@@ -159,7 +159,7 @@ imwrite(neuron_index_ave,[Pathnew,'Neuron_index_ref.tif']);
 %     loc=mean(B_ave{i});
 %     text(loc(2)-2,loc(1),num2str(i+max(max(L_merge))+max(max(L_ref))),'color','c','FontSize',f_size)
 % end
-% ROIs=[B_merge;B_ref;B_ave];
+ROIs=[B_merge;B_ref;B_ave];
 % hold off
 % print(gcf,[Pathnew,'Neuron_index_ave'],'-dtiff','-r600')
 % close
